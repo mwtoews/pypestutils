@@ -386,10 +386,10 @@ class PestUtilsLib:
         np.ndarray
             Time-interpolated simulation values with shape (nobs,).
         """
-        simtime = np.array(simtime, dtype=np.float64, order="F", copy=False)
-        simval = np.array(simval, dtype=np.float64, order="F", copy=False)
-        obspoint = np.array(obspoint, order="F", copy=False)
-        obstime = np.array(obstime, dtype=np.float64, order="F", copy=False)
+        simtime = np.asarray(simtime, dtype=np.float64, order="F")
+        simval = np.asarray(simval, dtype=np.float64, order="F")
+        obspoint = np.asarray(obspoint, order="F")
+        obstime = np.asarray(obstime, dtype=np.float64, order="F")
         if simtime.ndim != 1:
             raise ValueError("expected 'simtime' to have ndim=1")
         elif simval.ndim != 2:
