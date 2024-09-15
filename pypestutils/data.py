@@ -143,7 +143,7 @@ class ManyArrays:
                 raise KeyError(f"'{name}' defined more than once")
             self._names.append(name)
             # Each must be 1D and the same shape
-            ar = np.array(float_arrays[name], np.float64, order="F", copy=False)
+            ar = np.asarray(float_arrays[name], np.float64, order="F")
             if ar.ndim != 1:
                 raise ValueError(f"expected '{name}' ndim to be 1; found {ar.ndim}")
             if not self.shape:
@@ -157,16 +157,15 @@ class ManyArrays:
             if name in self._names:
                 raise KeyError(f"'{name}' defined more than once")
             self._names.append(name)
-            float_any[name] = ar = np.array(
-                float_any[name], np.float64, order="F", copy=False
-            )
+            float_any[name] = ar = np.asarray(
+                float_any[name], np.float64, order="F")
             if not self.shape and ar.ndim == 1:
                 self.shape = ar.shape
         for name in int_any.keys():
             if name in self._names:
                 raise KeyError(f"'{name}' defined more than once")
             self._names.append(name)
-            int_any[name] = ar = np.array(int_any[name], order="F", copy=False)
+            int_any[name] = ar = np.asarray(int_any[name], order="F")
             if not self.shape and ar.ndim == 1:
                 self.shape = ar.shape
         if not self.shape:
@@ -196,7 +195,7 @@ class ManyArrays:
                 raise ValueError(
                     f"expected '{name}' to be integer type; found {ar.dtype}"
                 )
-            setattr(self, name, ar.astype(np.int32, copy=False))
+            setattr(self, name, ar.astype(np.int32))
 
     def __len__(self) -> int:
         """Return length of dimension from shape[0]."""
