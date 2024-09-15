@@ -26,7 +26,6 @@ dependencies:
   - notebook
   - nbconvert
   - pip
-  - flopy
   - pip:
     - git+https://github.com/pypest/pyemu.git
     - git+https://github.com/modflowpy/flopy.git

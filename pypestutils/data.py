@@ -195,7 +195,7 @@ class ManyArrays:
                 raise ValueError(
                     f"expected '{name}' to be integer type; found {ar.dtype}"
                 )
-            setattr(self, name, ar.astype(np.int32))
+            setattr(self, name, ar.astype(np.int32, copy=False))
 
     def __len__(self) -> int:
         """Return length of dimension from shape[0]."""
