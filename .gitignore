@@ -1,9 +1,25 @@
+# General
+.DS_Store
+*.swp
+*.*~
+
+# Modflow outputs
+*.lst
+*.list
+*.grb
+*.cbc
+*.cbb
+*.bud
+*.hds
+*.hed
+*.ucn
+*.out
+*.out.csv
+
 # Byte-compiled / optimized
 __pycache__/
 *.py[cod]
 *$py.class
-
-.DS_Store
 
 # C extensions / DLL files
 *.dll
@@ -11,6 +27,7 @@ __pycache__/
 *.o
 *.obj
 *.so
+*.lib
 
 # Local installation and misc. dirs
 inst/
