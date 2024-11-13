@@ -1,4 +1,5 @@
 """Tests for example notebooks."""
+
 import logging
 import pytest
 import os
@@ -27,17 +28,27 @@ import os
 #     #os.chdir(cwd)
 #     return
 
+
 def test_notebooks():
     pyemu = pytest.importorskip("pyemu")
 
     nb_dir = os.path.join("examples")
     nb_files = [f for f in os.listdir(nb_dir) if f.endswith(".ipynb")]
     for nb_file in nb_files:
-        pyemu.os_utils.run("jupyter nbconvert --execute --ExecutePreprocessor.timeout=180000 --inplace {0}".format(nb_file),cwd=nb_dir)
-        pyemu.os_utils.run("jupyter nbconvert --ClearOutputPreprocessor.enabled=True --ClearMetadataPreprocessor.enabled=True --allow-errors --inplace {0}".format(nb_file),cwd=nb_dir)
+        pyemu.os_utils.run(
+            "jupyter nbconvert --execute --ExecutePreprocessor.timeout=180000 --inplace {0}".format(
+                nb_file
+            ),
+            cwd=nb_dir,
+        )
+        pyemu.os_utils.run(
+            "jupyter nbconvert --ClearOutputPreprocessor.enabled=True --ClearMetadataPreprocessor.enabled=True --allow-errors --inplace {0}".format(
+                nb_file
+            ),
+            cwd=nb_dir,
+        )
     return
 
 
-
-#if __name__ == "__main__":
-    #test_notebook("pypestutils_pstfrom_structured_mf6.ipynb")
+# if __name__ == "__main__":
+# test_notebook("pypestutils_pstfrom_structured_mf6.ipynb")
