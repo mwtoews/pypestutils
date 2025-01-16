@@ -39,5 +39,6 @@ def test_notebooks():
 
 
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
+    test_notebooks()
     #test_notebook("pypestutils_pstfrom_structured_mf6.ipynb")
