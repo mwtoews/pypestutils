@@ -1,4 +1,5 @@
 """Data module."""
+
 from __future__ import annotations
 
 from enum import Enum
@@ -157,8 +158,7 @@ class ManyArrays:
             if name in self._names:
                 raise KeyError(f"'{name}' defined more than once")
             self._names.append(name)
-            float_any[name] = ar = np.asarray(
-                float_any[name], np.float64, order="F")
+            float_any[name] = ar = np.asarray(float_any[name], np.float64, order="F")
             if not self.shape and ar.ndim == 1:
                 self.shape = ar.shape
         for name in int_any.keys():

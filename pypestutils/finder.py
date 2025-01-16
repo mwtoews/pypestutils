@@ -1,4 +1,5 @@
 """Locate pestutils shared library by any means necessary."""
+
 import ctypes
 import os
 import platform
