@@ -1,4 +1,5 @@
 """Low-level Fortran-Python ctypes functions."""
+
 from __future__ import annotations
 
 from ctypes import ARRAY, CDLL, POINTER, c_char, c_double, c_int
