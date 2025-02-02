@@ -1,5 +1,4 @@
 import os
-import pyemu
 
 
 def setup_pps(d):
@@ -10,9 +9,10 @@ def setup_pps(d):
 
 
 def apply_pps():
-    from pypestutils import helpers
     import numpy as np
     import pandas as pd
+
+    from pypestutils import helpers
 
     df = pd.read_csv("pp_info.csv")
     gridspec_fname = "org.grb"

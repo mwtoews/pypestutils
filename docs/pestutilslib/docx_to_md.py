@@ -1,9 +1,8 @@
-import sys
-import os
+from subprocess import run
 
 
 def processFile(inFile, outFile):
-    mdFile = open(inFile, "r")
+    mdFile = open(inFile)
     toc = []
     levels = [0, 0, 0, 0, 0]
     newFile = open(outFile, "w")
@@ -14,8 +13,7 @@ def processFile(inFile, outFile):
     for line in mdFile:
         if partOfToc and line != "\n":
             continue
-        else:
-            partOfToc = False
+        partOfToc = False
         if "Table of Contents" in line:
             tocLoc = len(tempFile) + 1
             partOfToc = True
@@ -39,8 +37,7 @@ def processFile(inFile, outFile):
 
 def addSectionTag(line, secId):
     startIndex = line.find(" ")
-    line = line[: startIndex + 1] + "<a id='" + secId + "' />" + line[startIndex + 1 :]
-    return line
+    return line[: startIndex + 1] + "<a id='" + secId + "' />" + line[startIndex + 1 :]
 
 
 def buildToc(line, toc, levels):
@@ -78,8 +75,7 @@ def buildToc(line, toc, levels):
 
 def cleanLine(text):
     text = stripNewline(text)
-    text = removeAnchors(text)
-    return text
+    return removeAnchors(text)
 
 
 def stripNewline(text):
@@ -96,13 +92,21 @@ def removeAnchors(text):
 
 def clean(docx_file, inFile, outFile, run_pandoc=True):
     if run_pandoc:
-        os.system(
-            "pandoc -t gfm --wrap=none --extract-media . -o file.md {0} --mathjax".format(
-                docx_file
-            )
-        )
-    num_str = [str(i) for i in range(1, 11)]
-    lines = open(inFile, "r").readlines()
+        cmds = [
+            "pandoc",
+            "-t",
+            "gfm",
+            "--wrap=none",
+            "--extract-media",
+            ".",
+            "-o",
+            "file.md",
+            docx_file,
+            "--mathjax",
+        ]
+        run(cmds, check=True)
+    # num_str = [str(i) for i in range(1, 11)]
+    lines = open(inFile).readlines()
 
     # notoc_lines = []
     i = 0
@@ -112,9 +116,11 @@ def clean(docx_file, inFile, outFile, run_pandoc=True):
     #         while True:
     #             i += 1
     #             line = lines[i]
-    #             if line.lower().strip().startswith("introduction") or line.lower().strip().startswith("# introduction") :
+    #             if line.lower().strip().startswith(
+    #                 "introduction"
+    #             ) or line.lower().strip().startswith("# introduction"):
     #                 break
-    #             #print(line)
+    #             # print(line)
     #     notoc_lines.append(line)
     #     i += 1
     # lines = notoc_lines
@@ -132,19 +138,18 @@ def clean(docx_file, inFile, outFile, run_pandoc=True):
             )
         if "blockquote" in lines[i]:
             lines[i] = lines[i].replace("<blockquote>", "").replace("</blockquote>", "")
-        if lines[i].strip().startswith("$") and not "bmatrix" in lines[i].lower():
+        if lines[i].strip().startswith("$") and "bmatrix" not in lines[i].lower():
             label = lines[i].split()[-1]
             eq_str = lines[i].replace("$$", "$").split("$")[1]
             eq_str = (
-                r"{0}".format(eq_str)
-                .replace("\\\\", "\\")
+                rf"{eq_str}".replace("\\\\", "\\")
                 .replace(" \\ ", " ")
                 .replace("\\_", "_")
             )
-            math_str_pre = '<img src="https://latex.codecogs.com/svg.latex?\Large&space;{0}'.format(
-                eq_str
+            math_str_pre = (
+                rf'<img src="https://latex.codecogs.com/svg.latex?\Large&space;{eq_str}'
             )
-            math_str_post = '" title="\Large {0}" />  {1}  <br>'.format(eq_str, label)
+            math_str_post = rf'" title="\Large {eq_str}" />  {label}  <br>'
             lines[i] = math_str_pre + " " + math_str_post
         if lines[i].strip().startswith("<table>"):  # and "pcf" in lines[i].lower():
             lines[i] = '<div style="text-align: left">' + lines[i] + "</div>"
@@ -165,9 +170,17 @@ def clean(docx_file, inFile, outFile, run_pandoc=True):
         #         lines.pop(i)
         #         if "bmatrix" in lines[i].lower():
         #             break
-        #     eq_str = r"{0}".format(eq_str).replace("\\\\", "\\").replace(" \\ ", " ").replace("\\_", "_")
-        #     math_str_pre = "<img src=\"https://latex.codecogs.com/svg.latex?\Large&space;{0}".format(eq_str)
-        #     math_str_post = "\" title=\"\Large {0}\" />".format(eq_str)
+        #     eq_str = (
+        #         r"{0}".format(eq_str)
+        #         .replace("\\\\", "\\")
+        #         .replace(" \\ ", " ")
+        #         .replace("\\_", "_")
+        #     )
+        #     math_str_pre = '<img src="https://latex.codecogs.com/svg.latex'\
+        #         '?\Large&space;{0}'.format(
+        #         eq_str
+        #     )
+        #     math_str_post = '" title="\Large {0}" />'.format(eq_str)
         #     lines[i] = math_str_pre + " " + math_str_post
 
         i += 1
